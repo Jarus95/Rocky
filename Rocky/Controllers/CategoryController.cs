@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Asn1.Cms.Ecc;
 using Rocky.Data;
+using Rocky.Models;
 
 namespace Rocky.Controllers
 {
@@ -9,14 +11,23 @@ namespace Rocky.Controllers
 
         public CategoryController(ApplicationDbContext _dbContext)
         {
-             dbContext = _dbContext;
+            dbContext = _dbContext;
         }
 
 
-        //Get
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(Category category)
+        {
+            dbContext.Category.Add(category);
+            dbContext.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         public IActionResult Index()
