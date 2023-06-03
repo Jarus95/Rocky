@@ -12,6 +12,13 @@ namespace Rocky.Controllers
              dbContext = _dbContext;
         }
 
+
+        //Get
+        public IActionResult Create()
+        {
+            return View();
+        }
+
         public IActionResult Index()
         {
             var catergories = dbContext.Category.ToList();
