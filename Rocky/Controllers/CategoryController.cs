@@ -14,6 +14,12 @@ namespace Rocky.Controllers
             dbContext = _dbContext;
         }
 
+        public IActionResult Index()
+        {
+            var catergories = dbContext.Category.ToList();
+            return View(catergories);
+        }
+
 
         [HttpGet]
         public IActionResult Create()
@@ -35,10 +41,67 @@ namespace Rocky.Controllers
             return View(category);
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult Edit(int? id)
         {
-            var catergories = dbContext.Category.ToList();
-            return View(catergories);
+            if(id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            var category = dbContext.Category.Find(id);
+            if(category == null)
+            {
+                return NotFound();
+            }
+
+            return View(category);
         }
+
+        [HttpPost]
+        public IActionResult Edit(Category? _category)
+        {
+            if (_category == null)
+            {
+                return NotFound();
+            }
+
+            dbContext.Category.Update(_category);
+            dbContext.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+
+        [HttpGet]
+        public IActionResult Delete(int? id)
+        {
+            if(id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            var category = dbContext.Category.Find(id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            return View(category);
+        }
+
+
+        [HttpPost]
+        public IActionResult Delete(Category _category)
+        {
+            if (_category == null)
+            {
+                return NotFound();
+            }
+
+            dbContext.Category.Remove(_category);
+            dbContext.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
     }
 }
