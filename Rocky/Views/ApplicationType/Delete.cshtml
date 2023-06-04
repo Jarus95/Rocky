@@ -1,14 +1,13 @@
 ﻿@model Rocky.Models.ApplicationType
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Delete";
 }
 
-<form method="post" asp-action="Create">
+<form method="post" asp-action="Delete">
     <div class="container p-3">
-       <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        
+
         <div class="row">
-            <h2 class="text-info pl-3">Add ApplicationType</h2>
+            <h2 class="text-info pl-3">Delete Application Type</h2>
         </div>
         <div class="row">
             <div class="col-8">
@@ -17,20 +16,21 @@
                         <label asp-for="Name"></label>
                     </div>
                     <div class="col-8">
-                        <input asp-for="Name" class="form-control" />
-                        <span asp-validation-for="@Model.Name" class="text-danger"></span>
+                        <input asp-for="Name" disabled class="form-control" value="@Model.Name" />
+
                     </div>
 
                 </div>
-
+               
+                <br />
                 <div class="form-group row">
                     <div class="col-8 offset-4 row">
 
                         <div class="col">
-                            <input type="submit" class="btn btn-info w-100" value="CREATE" />
+                            <input type="submit" class="btn btn-danger w-100" value="Delete" />
                         </div>
                         <div class="col">
-                            <a asp-action="Index" class="btn btn-success w-100"> Back</a>
+                            <a asp-action="Index" class="btn btn-primary w-100"> Back</a>
                         </div>
                     </div>
                 </div>
@@ -43,4 +43,3 @@
 
     </div>
 </form>
-

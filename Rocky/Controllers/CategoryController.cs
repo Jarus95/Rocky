@@ -61,14 +61,19 @@ namespace Rocky.Controllers
         [HttpPost]
         public IActionResult Edit(Category? _category)
         {
-            if (_category == null)
+            if (ModelState.IsValid)
             {
-                return NotFound();
+                if (_category == null)
+                {
+                    return NotFound();
+                }
+
+                dbContext.Category.Update(_category);
+                dbContext.SaveChanges();
+                return RedirectToAction("Index");
             }
 
-            dbContext.Category.Update(_category);
-            dbContext.SaveChanges();
-            return RedirectToAction("Index");
+            return View(_category);
         }
 
 
