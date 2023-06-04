@@ -25,9 +25,14 @@ namespace Rocky.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Category category)
         {
-            dbContext.Category.Add(category);
-            dbContext.SaveChanges();
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+               dbContext.Category.Add(category);
+               dbContext.SaveChanges();
+               return RedirectToAction("Index");
+
+            }
+            return View(category);
         }
 
         public IActionResult Index()
