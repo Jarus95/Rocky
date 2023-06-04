@@ -11,7 +11,8 @@
 
         <div class="col-6">
             <a asp-action="Create" class="btn btn-primary">
-               Create New Category
+                <i class="fa-solid fa-plus"></i>
+                Create New Category
             </a>
         </div>
     </div>
@@ -37,11 +38,12 @@
                         <td width="30%"> @item.DisplayOrder</td>
                         <td class="w-75 btn-group" role="group">
                             <a asp-route-id="@item.Id" asp-action="Edit" class="btn btn-primary mx-2">
-                               Edit
+                                <i class="fa-solid fa-pen-to-square"></i>
+                
                             </a>
 
                             <a asp-route-id="@item.Id" asp-action="Delete" class="btn btn-danger mx-2">
-                               Delete
+                                <i class="fa-solid fa-delete-left"></i>
                             </a>
                          </td>
                     </tr>
