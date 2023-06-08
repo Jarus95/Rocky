@@ -16,7 +16,7 @@ namespace Rocky.Models
         [Required]
         [Range(1, int.MaxValue)]
         public double Price { get; set; }
-        public string? Image;
+        public string? Image { get; set; }
 
         //[DisplayName("Category Type")]
         public int CategoryId { get; set; }
