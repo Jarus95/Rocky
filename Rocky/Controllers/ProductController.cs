@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Rocky.Data;
 using Rocky.Models;
 
@@ -30,6 +31,13 @@ namespace Rocky.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            IEnumerable<SelectListItem> CategoryDropDown = dbContext.Category.Select(i=> new SelectListItem 
+            { 
+                Text = i.Name, 
+                Value = i.Id.ToString()
+
+            });
+            ViewBag.CategoryDropDown = CategoryDropDown;
             return View();
         }
 

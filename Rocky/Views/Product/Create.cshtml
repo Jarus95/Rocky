@@ -28,7 +28,7 @@
                         <label asp-for="Price"></label>
                     </div>
                     <div class="col-8">
-                        <input asp-for="Price" class="form-control" />
+                        <input asp-for="Price" class="form-control" value="0" />
                         <span asp-validation-for="Price" class="text-danger"></span>
                     </div>
 
@@ -61,6 +61,22 @@
                 </div>
 
                 <br />
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="CategoryId"></label>
+                    </div>
+                    <div class="col-8">
+                        <select asp-for="CategoryId" asp-items="@ViewBag.CategoryDropDown" class="form-control">
+                            <option selected>--Select Category--</option>
+                        </select>
+                        <span asp-validation-for="CategoryId" class="text-danger"></span>
+
+                    </div>
+
+                </div>
+
+                <br />
+
                 <div class="form-group row">
                     <div class="col-8 offset-4 row">
 
