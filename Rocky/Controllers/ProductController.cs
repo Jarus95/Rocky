@@ -31,14 +31,22 @@ namespace Rocky.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            IEnumerable<SelectListItem> CategoryDropDown = dbContext.Category.Select(i=> new SelectListItem 
-            { 
-                Text = i.Name, 
+            //IEnumerable<SelectListItem> CategoryDropDown = dbContext.Category.Select(i=> new SelectListItem 
+            //{ 
+            //    Text = i.Name, 
+            //    Value = i.Id.ToString()
+
+            //});
+            //ViewBag.CategoryDropDown = CategoryDropDown;
+            ProductVM productVM = new ProductVM();
+            productVM.Product = new Product();
+            productVM.selectListItems = dbContext.Category.Select(i => new SelectListItem
+            {
+                Text = i.Name,
                 Value = i.Id.ToString()
 
             });
-            ViewBag.CategoryDropDown = CategoryDropDown;
-            return View();
+            return View(productVM);
         }
 
         [HttpPost]
