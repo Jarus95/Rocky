@@ -9,6 +9,7 @@ namespace Rocky.Controllers
         public readonly  ApplicationDbContext dbContext;
 
 
+
         public ApplicationTypeController(ApplicationDbContext applicationDb)
         {
             dbContext = applicationDb;
