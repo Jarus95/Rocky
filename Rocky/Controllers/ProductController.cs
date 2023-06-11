@@ -31,6 +31,7 @@ namespace Rocky.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+         
             //IEnumerable<SelectListItem> CategoryDropDown = dbContext.Category.Select(i=> new SelectListItem 
             //{ 
             //    Text = i.Name, 
@@ -51,16 +52,16 @@ namespace Rocky.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Product product)
+        public IActionResult Create(ProductVM pv)
         {
             if (ModelState.IsValid)
             {
-                dbContext.Product.Add(product);
-                dbContext.SaveChanges();
-                return RedirectToAction("Index");
+                //dbContext.Product.Add(product);
+                //dbContext.SaveChanges();
+                //return RedirectToAction("Index");
 
             }
-            return View(product);
+            return View(pv);
         }
     }
 }

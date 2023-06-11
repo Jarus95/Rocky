@@ -54,7 +54,7 @@
                         <label asp-for="Product.Image"></label>
                     </div>
                     <div class="col-8">
-                        <input type="file" name="files" id="uploadBox" multiple class="form-control" />
+                        <input type="file" name="files" id="uploadBox"  multiple class="form-control" />
                       
                     </div>
 
@@ -81,7 +81,7 @@
                     <div class="col-8 offset-4 row">
 
                         <div class="col">
-                            <input type="submit" class="btn btn-info w-100" value="CREATE" />
+                            <input onclick="return validateInput()" type="submit" class="btn btn-info w-100" value="CREATE" />
                         </div>
                         <div class="col">
                             <a asp-action="Index" class="btn btn-success w-100"> Back</a>
@@ -97,6 +97,27 @@
 
     </div>
 </form>
+
+<script>
+
+    function validateInput() 
+    {
+        if (document.getElementById("uploadBox").value == "")
+        {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Please upload an Image!',
+              
+            })
+
+            return false;
+        }
+
+        return true;
+
+    }
+</script>
 
 @*@section Scripts{
     @{  <partial name="_ValidationScriptsPartial" />}
