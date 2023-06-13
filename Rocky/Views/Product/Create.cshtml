@@ -67,7 +67,7 @@
                     </div>
                     <div class="col-8">
                         <select asp-for="Product.CategoryId" asp-items="@Model.selectListItems" class="form-control">
-                            <option selected>--Select Category--</option>
+                            <option disabled selected>--Select Category--</option>
                         </select>
                         <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
 
@@ -101,7 +101,7 @@
 
 
 @section Scripts{
-   @* @{  <partial name="_ValidationScriptsPartial" />}*@
+    @{  <partial name="_ValidationScriptsPartial" />}
     <script>
 
         $(document).ready(function () {

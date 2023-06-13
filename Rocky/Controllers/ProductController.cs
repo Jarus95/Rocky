@@ -8,10 +8,11 @@ namespace Rocky.Controllers
     public class ProductController : Controller
     {
         private readonly ApplicationDbContext dbContext;
-
-        public ProductController(ApplicationDbContext _dbContext)
+        private readonly IWebHostEnvironment webHostEnvironment;
+        public ProductController(ApplicationDbContext _dbContext, IWebHostEnvironment _webHostEnvironment)
         {
             dbContext = _dbContext;
+            webHostEnvironment = _webHostEnvironment;
         }
 
 
@@ -31,10 +32,10 @@ namespace Rocky.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-         
-            //IEnumerable<SelectListItem> CategoryDropDown = dbContext.Category.Select(i=> new SelectListItem 
-            //{ 
-            //    Text = i.Name, 
+
+            //IEnumerable<SelectListItem> CategoryDropDown = dbContext.Category.Select(i => new SelectListItem
+            //{
+            //    Text = i.Name,
             //    Value = i.Id.ToString()
 
             //});
@@ -54,14 +55,24 @@ namespace Rocky.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(ProductVM pv)
         {
-            if (ModelState.IsValid)
-            {
-                //dbContext.Product.Add(product);
-                //dbContext.SaveChanges();
-                //return RedirectToAction("Index");
+            
+                var files = HttpContext.Request.Form.Files;
+                string webRootPath = webHostEnvironment.WebRootPath;
+                string upload = Path.Combine(webRootPath, WC.ImagePath);
+                string fileName = Guid.NewGuid().ToString();
+                string extension = Path.GetExtension(files[0].FileName);
 
-            }
-            return View(pv);
+                using (var fileStream = new FileStream(Path.Combine(upload, fileName + extension), FileMode.Create))
+                {
+                    files[0].CopyTo(fileStream);
+                }
+
+                pv.Product.Image = fileName + extension;
+                dbContext.Product.Add(pv.Product);
+                dbContext.SaveChanges();
+                return RedirectToAction("Index");
+
+  
         }
     }
 }
