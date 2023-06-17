@@ -151,5 +151,69 @@ namespace Rocky.Controllers
          
         }
 
+        [HttpGet]
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            //var product = dbContext.Product.Include(u => u.CategoryId).FirstOrDefault(u => u.Id == id)
+            var product = dbContext.Product.Find(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            ProductVM pv = new ProductVM();
+            pv.selectListItems = dbContext.Category.Select(i => new SelectListItem
+            {
+                Text = i.Name,
+                Value = i.Id.ToString()
+
+            });
+            pv.Product = product;
+
+            return View(product);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(ProductVM? productVM)
+        {
+
+            if (productVM == null)
+            {
+                return NotFound();
+            }
+
+            var obj = dbContext.Product.AsNoTracking().FirstOrDefault(u => u.Id == productVM.Product.Id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+
+
+           
+                string webRootPath = webHostEnvironment.WebRootPath;
+                string upload = Path.Combine(webRootPath, WC.ImagePath);
+
+                var oldFile = Path.Combine(upload, obj.Image);
+                if (System.IO.File.Exists(oldFile))
+                {
+                    System.IO.File.Delete(oldFile);
+                }
+                
+            
+
+          
+
+            dbContext.Product.Remove(obj);
+            dbContext.SaveChanges();
+            return RedirectToAction("Index");
+
+
+
+        }
+
     }
 }
