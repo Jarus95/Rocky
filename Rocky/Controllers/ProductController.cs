@@ -159,8 +159,8 @@ namespace Rocky.Controllers
                 return NotFound();
             }
 
-            //var product = dbContext.Product.Include(u => u.CategoryId).FirstOrDefault(u => u.Id == id)
-            var product = dbContext.Product.Find(id);
+            var product = dbContext.Product.Include(u => u.Category).FirstOrDefault(u => u.Id == id);
+            //var product = dbContext.Product.Find(id);
             if (product == null)
             {
                 return NotFound();
@@ -178,15 +178,15 @@ namespace Rocky.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(ProductVM? productVM)
+        public IActionResult Delete(Product product)
         {
 
-            if (productVM == null)
+            if (product == null)
             {
                 return NotFound();
             }
 
-            var obj = dbContext.Product.AsNoTracking().FirstOrDefault(u => u.Id == productVM.Product.Id);
+            var obj = dbContext.Product.AsNoTracking().FirstOrDefault(u => u.Id == product.Id);
             if (obj == null)
             {
                 return NotFound();

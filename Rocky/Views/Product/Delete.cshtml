@@ -1,4 +1,4 @@
-﻿@model Rocky.Models.ProductVM
+﻿@model Rocky.Models.Product
 @{
     ViewData["Title"] = "Delete";
 }
@@ -6,7 +6,7 @@
 <form method="post" asp-action="Delete">
   
     <div class="container p-3">
-        <input asp-for="Product.Id" hidden />
+        <input asp-for="Id" hidden />
         <div class="row">
             <h2 class="text-info pl-3">Delete Product</h2>
         </div>
@@ -14,10 +14,10 @@
             <div class="col-8">
                 <div class="form-group row">
                     <div class="col-4">
-                        <label asp-for="Product.Name"></label>
+                        <label asp-for="Name"></label>
                     </div>
                     <div class="col-8">
-                        <input disabled asp-for="Product.Name" class="form-control" value="@Model.Product.Name"  />
+                        <input disabled asp-for="Name" class="form-control" value="@Model.Name"  />
           
                     </div>
 
@@ -25,10 +25,10 @@
                 <br />
                 <div class="form-group row">
                     <div class="col-4">
-                        <label asp-for="Product.Price"></label>
+                        <label asp-for="Price"></label>
                     </div>
                     <div class="col-8">
-                        <input disabled asp-for="Product.Price" class="form-control" value="@Model.Product.Price" />
+                        <input disabled asp-for="Price" class="form-control" value="@Model.Price" />
                       
                     </div>
 
@@ -38,10 +38,10 @@
 
                 <div class="form-group row">
                     <div class="col-4">
-                        <label asp-for="Product.Description"></label>
+                        <label asp-for="Description"></label>
                     </div>
                     <div class="col-8">
-                        <textarea disabled asp-for="Product.Description" class="form-control summernote"></textarea>
+                        <textarea  asp-for="Description" class="form-control summernote"></textarea>
                      
                     </div>
 
@@ -49,16 +49,14 @@
 
                
                 
-
+                @*asp-items="@Model.Category.Name"*@
                 <br />
                 <div class="form-group row">
                     <div class="col-4">
-                        <label asp-for="Product.CategoryId"></label>
+                        <label asp-for="CategoryId"></label>
                     </div>
                     <div class="col-8">
-                        <select disabled asp-for="Product.CategoryId" asp-items="@Model.selectListItems" class="form-control">
-                            <option disabled selected>--Select Category--</option>
-                        </select>
+                        <input disabled asp-for="@Model.Category.Name" class="form-control" />
 
                     </div>
 
@@ -80,7 +78,7 @@
             </div>
 
             <div class="col-4">
-                <img src="~/images/product/@Model.Product.Image" width="100%" />
+                <img src="~/images/product/@Model.Image" width="100%" />
             </div>
         </div>
 
@@ -99,8 +97,11 @@
         <partial name="_ValidationScriptsPartial" />
     }
     <script>
+     
+        $(document).ready(function () {
+            $('.summernote').summernote('disable');
+        });
 
-      
     </script>
 
 
