@@ -3,10 +3,10 @@
     ViewData["Title"] = "Edit";
 }
 
-<form method="post" asp-action="Create" enctype="multipart/form-data">
+<form method="post" asp-action="Edit" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="container p-3">
-
+        <input asp-for="Product.Id" hidden />
         <div class="row">
             <h2 class="text-info pl-3">Edit Product</h2>
         </div>
@@ -81,7 +81,7 @@
                     <div class="col-8 offset-4 row">
 
                         <div class="col">
-                            <input onclick="return validateInput()" type="submit" class="btn btn-info w-100" value="CREATE" />
+                            <input  type="submit" class="btn btn-info w-100" value="Edit" />
                         </div>
                         <div class="col">
                             <a asp-action="Index" class="btn btn-success w-100"> Back</a>
@@ -111,11 +111,11 @@
     }
     <script>
 
-        $(document).ready(function () {
-            $('.summernote').summernote({
-                height: 250
-            });
-        });
+        //$(document).ready(function () {
+        //    $('.summernote').summernote({
+        //        height: 250
+        //    });
+        //});
 
         function validateInput() {
             if (document.getElementById("uploadBox").value == "") {

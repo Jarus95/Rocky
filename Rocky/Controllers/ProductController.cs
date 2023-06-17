@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Rocky.Data;
 using Rocky.Models;
 
@@ -101,23 +102,54 @@ namespace Rocky.Controllers
             return View(pv);
         }
 
-        //[HttpPost]
-        //public IActionResult Edit(Category? _category)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        if (_category == null)
-        //        {
-        //            return NotFound();
-        //        }
+        [HttpPost]
+        public IActionResult Edit(ProductVM? productVM)
+        {
+            
+                if (productVM == null)
+                {
+                    return NotFound();
+                }
 
-        //        dbContext.Category.Update(_category);
-        //        dbContext.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
+                var obj = dbContext.Product.AsNoTracking().FirstOrDefault(u=>u.Id == productVM.Product.Id);
+                if (obj == null)
+                {
+                    return NotFound();
+                }
+                var files = HttpContext.Request.Form.Files;
 
-        //    return View(_category);
-        //}
+                if (files.Count > 0)
+                {
+                   string webRootPath = webHostEnvironment.WebRootPath;
+                   string upload = Path.Combine(webRootPath, WC.ImagePath);
+                   string fileName = Guid.NewGuid().ToString();
+                   string extension = Path.GetExtension(files[0].FileName);
+
+                   var oldFile = Path.Combine(upload, obj.Image);
+                   if (System.IO.File.Exists(oldFile))
+                   {
+                       System.IO.File.Delete(oldFile);
+                   }
+                   using (var fileStream = new FileStream(Path.Combine(upload, fileName + extension), FileMode.Create))
+                   {
+                       files[0].CopyTo(fileStream);
+                   }
+
+                   productVM.Product.Image = fileName + extension;
+                }
+
+              else
+              {
+                   productVM.Product.Image = obj.Image;
+              }
+
+                dbContext.Product.Update(productVM.Product);
+                dbContext.SaveChanges();
+                return RedirectToAction("Index");
+            
+
+         
+        }
 
     }
 }
