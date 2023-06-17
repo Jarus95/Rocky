@@ -74,5 +74,50 @@ namespace Rocky.Controllers
 
   
         }
+
+        [HttpGet]
+        public IActionResult Edit(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+
+            var product = dbContext.Product.Find(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            ProductVM pv = new ProductVM();
+            pv.selectListItems = dbContext.Category.Select(i => new SelectListItem
+            {
+                Text = i.Name,
+                Value = i.Id.ToString()
+
+            });
+            pv.Product = product;
+
+            return View(pv);
+        }
+
+        //[HttpPost]
+        //public IActionResult Edit(Category? _category)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        if (_category == null)
+        //        {
+        //            return NotFound();
+        //        }
+
+        //        dbContext.Category.Update(_category);
+        //        dbContext.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+
+        //    return View(_category);
+        //}
+
     }
 }
