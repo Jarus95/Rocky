@@ -19,12 +19,13 @@ namespace Rocky.Controllers
 
         public IActionResult Index()
         {
-            var product = dbContext.Product.ToList();
+            var product = dbContext.Product.Include(u=>u.Category).Include(p=>p.ApplicationType).ToList();
 
-            foreach (var item in product)
-            {
-                item.Category = dbContext.Category.FirstOrDefault(p=>p.Id == item.CategoryId);
-            }
+            //foreach (var item in product)
+            //{
+            //   item.Category = dbContext.Category.FirstOrDefault(p=>p.Id == item.CategoryId);
+            //   item.ApplicationType = dbContext.ApplicationType.FirstOrDefault(a => a.Id == item.ApplicationTypeId);
+            //}
 
             return View(product);
         }
@@ -34,16 +35,18 @@ namespace Rocky.Controllers
         public IActionResult Create()
         {
 
-            //IEnumerable<SelectListItem> CategoryDropDown = dbContext.Category.Select(i => new SelectListItem
-            //{
-            //    Text = i.Name,
-            //    Value = i.Id.ToString()
+           
 
-            //});
-            //ViewBag.CategoryDropDown = CategoryDropDown;
             ProductVM productVM = new ProductVM();
             productVM.Product = new Product();
-            productVM.selectListItems = dbContext.Category.Select(i => new SelectListItem
+            productVM.selectListItems1 = dbContext.Category.Select(i => new SelectListItem
+            {
+                Text = i.Name,
+                Value = i.Id.ToString()
+
+            });
+
+            productVM.selectListItems2 = dbContext.ApplicationType.Select(i => new SelectListItem
             {
                 Text = i.Name,
                 Value = i.Id.ToString()
@@ -91,7 +94,14 @@ namespace Rocky.Controllers
                 return NotFound();
             }
             ProductVM pv = new ProductVM();
-            pv.selectListItems = dbContext.Category.Select(i => new SelectListItem
+            pv.selectListItems1 = dbContext.Category.Select(i => new SelectListItem
+            {
+                Text = i.Name,
+                Value = i.Id.ToString()
+
+            });
+
+            pv.selectListItems2 = dbContext.ApplicationType.Select(i => new SelectListItem
             {
                 Text = i.Name,
                 Value = i.Id.ToString()
@@ -159,14 +169,21 @@ namespace Rocky.Controllers
                 return NotFound();
             }
 
-            var product = dbContext.Product.Include(u => u.Category).FirstOrDefault(u => u.Id == id);
+            var product = dbContext.Product.Include(u => u.Category).Include(p=>p.ApplicationType).FirstOrDefault(u => u.Id == id);
             //var product = dbContext.Product.Find(id);
             if (product == null)
             {
                 return NotFound();
             }
             ProductVM pv = new ProductVM();
-            pv.selectListItems = dbContext.Category.Select(i => new SelectListItem
+            pv.selectListItems1 = dbContext.Category.Select(i => new SelectListItem
+            {
+                Text = i.Name,
+                Value = i.Id.ToString()
+
+            });
+
+            pv.selectListItems2 = dbContext.ApplicationType.Select(i => new SelectListItem
             {
                 Text = i.Name,
                 Value = i.Id.ToString()
