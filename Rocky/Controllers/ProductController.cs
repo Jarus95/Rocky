@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Rocky.Data;
 using Rocky.Models;
+using Rocky.Models.ViewModels;
 
 namespace Rocky.Controllers
 {

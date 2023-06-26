@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Rocky.Data;
 using Rocky.Models;
+using Rocky.Models.ViewModels;
 using System.Diagnostics;
 
 namespace Rocky.Controllers
@@ -7,15 +10,22 @@ namespace Rocky.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext dbContext;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext _db)
         {
             _logger = logger;
+            dbContext = _db;
         }
 
         public IActionResult Index()
         {
-            return View();
+            HomeVM homeVM = new HomeVM()
+            {
+                Products = dbContext.Product.Include(x => x.Category).Include(x => x.ApplicationType),
+                Categories = dbContext.Category
+            };
+            return View(homeVM);
         }
 
         public IActionResult Privacy()
