@@ -13,4 +13,10 @@
         }
     </div>
 
+    @foreach (var item in Model.Products)
+    {
+        <partial name="_IndividualProductCard" model="item"/>
+    
+    }
+
 </div>
