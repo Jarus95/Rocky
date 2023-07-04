@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Rocky.Data;
 using Rocky.Models;
 using Rocky.Models.ViewModels;
+using Rocky.Utility;
 using System.Diagnostics;
 
 namespace Rocky.Controllers
@@ -28,15 +30,45 @@ namespace Rocky.Controllers
             return View(homeVM);
         }
 
+        [HttpGet]
         public IActionResult Details(int id)
         {
+            List<ShoppinCart> shoppinCarts = new List<ShoppinCart>();
+            if (HttpContext.Session.Get<List<ShoppinCart>>(WC.SessionCart) != null
+                && HttpContext.Session.Get<List<ShoppinCart>>(WC.SessionCart).Count() > 0)
+            {
+                shoppinCarts = HttpContext.Session.Get<List<ShoppinCart>>(WC.SessionCart);
+            }
+
             DetailsVM detailsVM = new DetailsVM
             {
                 Product = dbContext.Product.Include(y => y.Category).Include(y => y.ApplicationType).Where(x => x.Id == id).FirstOrDefault(),
                 IsOnCart = false
             };
 
+            foreach (var item in shoppinCarts)
+            {
+                if(item.ProductId==id)
+                {
+                    detailsVM.IsOnCart = true;
+                }    
+            }
+
             return View(detailsVM);
+        }
+
+        [HttpPost,ActionName("Details")]
+        public IActionResult DetailsPost(int id)
+        {
+            List<ShoppinCart> shoppinCarts = new List<ShoppinCart>();
+            if(HttpContext.Session.Get<List<ShoppinCart>>(WC.SessionCart) != null
+                && HttpContext.Session.Get<List<ShoppinCart>>(WC.SessionCart).Count() > 0)
+            {
+                shoppinCarts = HttpContext.Session.Get<List<ShoppinCart>>(WC.SessionCart);
+            }
+            shoppinCarts.Add(new ShoppinCart { ProductId = id});
+            HttpContext.Session.Set(WC.SessionCart, shoppinCarts);
+            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Privacy()
